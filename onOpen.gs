@@ -128,6 +128,7 @@ function copyJobsIntoResourceOverview() {
   var values = rows.getValues();
 
   var jobColour = new Array();
+  var jobFontColour = new Array();
   var jobDept = new Array();
   var jobNumber = new Array();
   var jobDesc = new Array();
@@ -139,6 +140,7 @@ function copyJobsIntoResourceOverview() {
         var dataRange = jobsSheet.getRange(i+1, 2, 1, 1); // Get the range of the job to pick the job colour from
         
         jobColour.push( dataRange.getBackgroundColor() );
+        jobFontColour.push( dataRange.getFontColor() );
         jobDept.push( values[i][3] );
         jobNumber.push( values[i][4] );
         jobDesc.push(values[i][5] );
@@ -170,12 +172,13 @@ function copyJobsIntoResourceOverview() {
 
   for ( i in jobNumber ) {
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobDeptColID, 1, 1).setValue(jobDept[i]);
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setValue("");
+    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setValue("X");
     
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setValue(jobNumber[i]);
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setValue(jobDesc[i]);
     
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setBackgroundColor(jobColour[i]);
+    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setFontColor (jobFontColour[i]);
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#d9ead3");
     resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#d9ead3");
 
