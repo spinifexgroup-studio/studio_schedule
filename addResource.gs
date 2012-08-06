@@ -1,0 +1,10 @@
+
+
+/**
+ * addResource
+ */
+function addResource() {
+};
+
+
+
