@@ -2,39 +2,49 @@
  * Hide empty lines in studio schedule
  */
 function copyJobsIntoLegend() {
-  var jobsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("jobs");
-  var resourceOverviewSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Studio Schedule");
+  var sheetSchedule = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Studio Schedule");
 
-  var rows = jobsSheet.getDataRange();
+  var rows = sheetSchedule.getDataRange();
   var numRows = rows.getNumRows();
   var values = rows.getValues();
 
   var jobColour = new Array();
   var jobFontColour = new Array();
+  var jobFontWeight = new Array();
   var jobDept = new Array();
+  var jobStatus = new Array();
   var jobNumber = new Array();
   var jobDesc = new Array();
+  var numberOfJobs = 0;
   
   //iterate through the jobs and add the job colour and parametres to some arrays.
-  for (var i = 10; i <= values.length - 1; i++) {
+  for (var i = 1; i <= values.length - 1; i++) {
     var cell = values[i][0];
-    if (cell.length != 0) {
-        var dataRange = jobsSheet.getRange(i+1, 2, 1, 1); // Get the range of the job to pick the job colour from
-        
-        jobColour.push( dataRange.getBackgroundColor() );
-        jobFontColour.push( dataRange.getFontColor() );
-        jobDept.push( values[i][3] );
-        jobNumber.push( values[i][4] );
-        jobDesc.push(values[i][5] );
+    if (typeof cell != "string" ) {
+      if (cell >= 10000) {
+          var dataRange = sheetSchedule.getRange(i+1, 3, 1, 1); // Get the range of the job to pick the job colour from
+          
+          jobColour.push( dataRange.getBackgroundColor() );
+          jobFontColour.push( dataRange.getFontColor() );
+          jobFontWeight.push( dataRange.getFontWeight() );
+          jobDept.push( values[i][1].substring(0,1) );
+          jobStatus.push( values[i][1].substring(1,2) );
+          jobNumber.push( values[i][3] );
+          jobDesc.push(values[i][4] );
+          
+          numberOfJobs++;
+          
+      }
     }
   }
   
   
   // Set remaining job slots to nothing in colour and value
-  if (jobNumber.length < 40) {
-    for ( i = 0; i < 40 - jobNumber.length; i++) {
+  if (numberOfJobs < 50) {
+    for ( i = 0; i < 50 - numberOfJobs; i++) {
           jobColour.push( "#ffffff" );
           jobDept.push( "" );
+          jobStatus.push( "" );
           jobNumber.push( "" );
           jobDesc.push( "" );
     }
@@ -42,37 +52,35 @@ function copyJobsIntoLegend() {
   
   // Now we have our jobs in an array we can write them to the resource OverView
   
-  var resourceRows = resourceOverviewSheet.getDataRange();
-  var resourceValues = resourceRows.getValues();
-
   var rowCount = 0;
   var firstRowID = 4
-  var jobColourColID = 5;
-  var jobNumberColID = 6;
-  var jobDescColID = 12;
+  var jobColourColID = 6;
+  var jobNumberColID = 7;
+  var jobDescColID = 13;
 
   for ( i in jobNumber ) {
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setValue("X");
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setBackgroundColor(jobColour[i]);
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setFontColor (jobFontColour[i]);
+    sheetSchedule.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setValue("X");
+    sheetSchedule.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setBackgroundColor(jobColour[i]);
+    sheetSchedule.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setFontColor (jobFontColour[i]);
+    sheetSchedule.getRange((firstRowID+rowCount), jobColourColID, 1, 1).setFontWeight (jobFontWeight[i]);
 
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setValue(jobNumber[i]);
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setValue(jobDesc[i]);
+    sheetSchedule.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setValue(jobNumber[i]);
+    sheetSchedule.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setValue(jobDesc[i]);
 
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setFontColor("#000000");
-    resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setFontColor("#000000");
+    sheetSchedule.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setFontColor("#000000");
+    sheetSchedule.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setFontColor("#000000");
     
     if (jobDept[i] == "S"){
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#cfe2f3");
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#cfe2f3");
+      sheetSchedule.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#cfe2f3");
+      sheetSchedule.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#cfe2f3");
     }
     else if (jobDept[i] == "I"){
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#fff2cc");
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#fff2cc");
+      sheetSchedule.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#fff2cc");
+      sheetSchedule.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#fff2cc");
     }
     else {
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#d9ead3");
-      resourceOverviewSheet.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#d9ead3");
+      sheetSchedule.getRange((firstRowID+rowCount), jobNumberColID, 1, 1).setBackgroundColor("#d9ead3");
+      sheetSchedule.getRange((firstRowID+rowCount), jobDescColID, 1, 1).setBackgroundColor("#d9ead3");
      }
 
     rowCount++;
