@@ -1,4 +1,3 @@
-
 /**
  * create month names and dates
  */
