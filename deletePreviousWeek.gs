@@ -78,7 +78,10 @@ function deletePreviousWeek() {
     }
     
     // Set the new start date in the variables sheet
-    variablesSheet.getRange("startDate").setValue(newStartDateString); 
+    variablesSheet.getRange("startDate").setValue(newStartDateString);
+    
+    //Create Date Headers
+    createDateHeaders();
 
     // The code below shows a popup that disappears in 5 seconds
     SpreadsheetApp.getActiveSpreadsheet().toast("Last week was just deleted for your convienience", "", 5);
