@@ -1,7 +1,7 @@
 /**
  * Fix Illegal edits
  */
- 
+ /*
 function onEdit(event)
 {
   var activeSheet = event.source.getActiveSheet();
@@ -46,3 +46,4 @@ function onEdit(event)
     
   }
 }
+*/
