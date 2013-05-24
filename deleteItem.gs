@@ -1,16 +1,15 @@
 
 /**
- * deleteJob
+ * deleteItem
  */
 function deleteItem() {
 
   // Get data about spreadsheet
-  var sheetSchedule = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Studo Schedule");
-  var sheetJobs     = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("jobs");
+  var sheetSchedule = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Studio Schedule");
   var sheetCurrent  = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
   // Check we are in a sheet where we can delete a job
-  if (sheetCurrent.getIndex() == sheetJobs.getIndex() || sheetCurrent.getIndex() == sheetSchedule.getIndex()) {
+  if (sheetCurrent.getIndex() == sheetSchedule.getIndex()) {
   
     var currentRange = sheetCurrent.getActiveRange();
     
@@ -18,32 +17,29 @@ function deleteItem() {
     if (currentRange.getNumRows() == 1) {
     
       // Get uID for the row
-      var startRow  = currentRange.getRowIndex();
-      var colIndex  = 1;
-      var numRows   = 1;
-      var colRange  = 10;
-      var dataRange = sheetCurrent.getRange(startRow, colIndex, numRows, colRange);
+      var row  = currentRange.getRowIndex();
+      var dataRange = sheetSchedule.getRange(row, 1);
       
       var uID = dataRange.getValue();
-      
+      if (typeof uID == "string" ){
+        SpreadsheetApp.getActiveSpreadsheet().toast("You can't delete that item.", "Warning!", 5);
 
-      
-      // Check if uID is in job range
-      if ( uID >= 10000 ) {
-        Browser.msgBox ("Success!");
       }
-      else if ( uID < 10000 && uID >= 100 ) {
-        Browser.msgBox ("You need to select a job to delete it. Use \"Delete Resource\" to delete resources.");
-      } 
       else {
-        Browser.msgBox ("You need to select a job to delete it.");
+        if ( uID >= 10000 ) {
+          sheetSchedule.deleteRow(row);
+          copyJobsIntoLegend();
+        }
+        else {
+          sheetSchedule.deleteRow(row);
+        }
       }
     }
     else {
-      Browser.msgBox ("One, and only one row can be selected");
+      SpreadsheetApp.getActiveSpreadsheet().toast("Only one item can be deleted at a time.", "Warning!", 5);
     }
   }
   else {
-    Browser.msgBox ("You must be in the spreadsheet \"studioSchedule\" or \"Jobs\"");
+    SpreadsheetApp.getActiveSpreadsheet().toast("You must be in the spreadsheet \"Studio Schedule\"", "Warning!", 5);
   }
 };
