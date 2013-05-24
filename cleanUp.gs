@@ -11,6 +11,7 @@ function cleanupViaMenu() {
   copyJobsIntoLegend();
   colouriseJobSchedule();
   cleanupGrid();
+  createDateHeaders();
   
   SpreadsheetApp.getActiveSpreadsheet().toast("Ok to start working", "Hey there!", 5);
   
