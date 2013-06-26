@@ -38,7 +38,7 @@ function addResourceRespondToSubmit( e ) {
       error = error + "Illegal level code. ";
     }
 
-    if (resourceDept.toUpperCase() == "D" || resourceDept.toUpperCase() == "2D" || resourceDept.toUpperCase() == "3D" || resourceDept.toUpperCase() == "LA" || resourceDept.toUpperCase() == "E" || resourceDept.toUpperCase() == "T" || resourceDept.toUpperCase() == "ID" || resourceDept.toUpperCase() == "SD" || resourceDept.toUpperCase() == "P" || resourceDept.toUpperCase() == "H" ){
+    if (resourceDept.toUpperCase() == "D" || resourceDept.toUpperCase() == "2D" || resourceDept.toUpperCase() == "3D" || resourceDept.toUpperCase() == "LA" || resourceDept.toUpperCase() == "E" || resourceDept.toUpperCase() == "T" || resourceDept.toUpperCase() == "ID" || resourceDept.toUpperCase() == "O" || resourceDept.toUpperCase() == "P" || resourceDept.toUpperCase() == "H" ){
     }
     else {
       error = error + "Illegal department code. ";
@@ -63,34 +63,30 @@ function addResourceRespondToSubmit( e ) {
   
   if (resourceDept.toUpperCase() == "D"){
     resourceHeaderID = "desID";
-    nextResourceHeaderID = "3dID";
-  }
-  else if (resourceDept.toUpperCase() == "3D"){
-    resourceHeaderID = "3dID";
     nextResourceHeaderID = "2dID";
   }
   else if (resourceDept.toUpperCase() == "2D"){
     resourceHeaderID = "2dID";
-    nextResourceHeaderID = "laID";
+    nextResourceHeaderID = "3dID";
   }
-  else if (resourceDept.toUpperCase() == "LA"){
-    resourceHeaderID = "laID";
-    nextResourceHeaderID = "editID";
-  }
-  else if (resourceDept.toUpperCase() == "E"){
-    resourceHeaderID = "editID";
-    nextResourceHeaderID = "techID";
-  }
-  else if (resourceDept.toUpperCase() == "T"){
-    resourceHeaderID = "techID";
+  else if (resourceDept.toUpperCase() == "3D"){
+    resourceHeaderID = "3dID";
     nextResourceHeaderID = "intDevID";
   }
   else if (resourceDept.toUpperCase() == "ID"){
     resourceHeaderID = "intDevID";
-    nextResourceHeaderID = "softDevID";
+    nextResourceHeaderID = "techID";
   }
-  else if (resourceDept.toUpperCase() == "SD"){
-    resourceHeaderID = "softDevID";
+  else if (resourceDept.toUpperCase() == "T"){
+    resourceHeaderID = "techID";
+    nextResourceHeaderID = "editID";
+  }
+  else if (resourceDept.toUpperCase() == "E"){
+    resourceHeaderID = "editID";
+    nextResourceHeaderID = "laID";
+  }
+  else if (resourceDept.toUpperCase() == "LA"){
+    resourceHeaderID = "laID";
     nextResourceHeaderID = "proID";
   }
   else if (resourceDept.toUpperCase() == "P"){
@@ -98,12 +94,16 @@ function addResourceRespondToSubmit( e ) {
     nextResourceHeaderID = "headID";
   }
   else if (resourceDept.toUpperCase() == "H"){
-    resourceHeaderID = "headID";
-    nextResourceHeaderID = "stuffID";
+    resourceHeaderID = "proID";
+    nextResourceHeaderID = "opsID";
+  }
+  else if (resourceDept.toUpperCase() == "O"){
+    resourceHeaderID = "opsID";
+    nextResourceHeaderID = "endID";
   }
   else {
-    resourceHeaderID = "stuffID";
-    nextResourceHeaderID = "endID";
+    resourceHeaderID = "desID";
+    nextResourceHeaderID = "2dID";
  }
 
   var sheetVariables = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("variables");
